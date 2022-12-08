@@ -27,3 +27,9 @@ Route::post('/newGame',[GameController::class, 'newGame']);
 
 Route::patch('/updateGame', [GameController::class , 'updateGame']);
 
+Route::delete('/deleteGame', [GameController::class, 'deleteGame']);
+
+
+
+
+

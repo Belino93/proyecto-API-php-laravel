@@ -105,15 +105,39 @@ class GameController extends Controller
                 );
             return response([
                 'success' => true,
-                'message' => 'All tasks retrieved successfully',
+                'message' => 'Game updated successfully',
                 'data' => $updated
             ], 200);
-            
+
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return response([
                 'success' => false,
                 'message' => 'Fail in patch game',
+            ], 400);
+        }
+    }
+
+    // Delete game WHERE id = id
+    public function deleteGame(Request $request)
+    {
+        Log::info('Delete game');
+        
+        try {
+            $id = $request -> input('id');
+            $deleted = DB::table('games') -> where('id','=', $id)->delete();
+
+            return response([
+                'success' => true,
+                'message' => 'Game deleted successfully',
+                'data' => $deleted
+            ]);
+
+        } catch (\Throwable $th) {
+            Log::error($th -> getMessage());
+            return response([
+                'success' => false,
+                'message' => 'Fail drop game',
             ], 400);
         }
     }
