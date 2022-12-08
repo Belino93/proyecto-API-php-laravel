@@ -22,3 +22,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/games', [GameController::class, 'getGames']);
 
 Route::get('/games/{genre}', [GameController::class, 'getGamesByGenre']);
+
+Route::post('/newGame',[GameController::class, 'newGame']);
+
