@@ -56,6 +56,8 @@ class GameController extends Controller
     // Create new game
     public function newGame(Request $request)
     {
+        Log::info('Creating new game');
+
         $title = $request->input('title');
         $genre = $request->input('genre');
         $developed = $request->input('developed');
@@ -71,13 +73,47 @@ class GameController extends Controller
             return response([
                 'success' => true,
                 'message' => 'Game created successfully',
-                'data' => $newGame,
+                'data' => 'The game ' . $title . ' was created with id ' . $newGame,
             ], 200);
         } catch (\Throwable $th) {
-            Log::error($th -> getMessage());
+            Log::error($th->getMessage());
             return response([
                 'success' => false,
                 'message' => 'New game was failed',
+            ], 400);
+        }
+    }
+
+    // Update game
+    public function updateGame(Request $request)
+    {
+        Log::info('Updating game');
+
+        try {
+            $id = $request->input('id');
+            $title = $request->input('title');
+            $genre = $request->input('genre');
+            $developed = $request->input('developed');
+            $updated = DB::table('games')
+                ->where('id', $id)
+                ->update(
+                    [
+                        'title' => $title,
+                        'genre' => $genre,
+                        'developed' => $developed,
+                    ]
+                );
+            return response([
+                'success' => true,
+                'message' => 'All tasks retrieved successfully',
+                'data' => $updated
+            ], 200);
+            
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return response([
+                'success' => false,
+                'message' => 'Fail in patch game',
             ], 400);
         }
     }

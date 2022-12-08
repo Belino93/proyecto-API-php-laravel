@@ -25,3 +25,5 @@ Route::get('/games/{genre}', [GameController::class, 'getGamesByGenre']);
 
 Route::post('/newGame',[GameController::class, 'newGame']);
 
+Route::patch('/updateGame', [GameController::class , 'updateGame']);
+
