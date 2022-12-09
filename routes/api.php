@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\PartyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,18 +19,17 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-
+//------------Game endpoints------------
 Route::get('/games', [GameController::class, 'getGames']);
 
 Route::get('/games/{genre}', [GameController::class, 'getGamesByGenre']);
 
-Route::post('/newGame',[GameController::class, 'newGame']);
+Route::post('/newGame', [GameController::class, 'newGame']);
 
-Route::patch('/updateGame', [GameController::class , 'updateGame']);
+Route::patch('/updateGame', [GameController::class, 'updateGame']);
 
 Route::delete('/deleteGame', [GameController::class, 'deleteGame']);
 
-
-
-
-
+//------------Party endpoints------------
+Route::get('/parties', [PartyController::class, 'getParties']);
+Route::get('/parties/{user_id}', [PartyController::class, 'getUserParties']);
