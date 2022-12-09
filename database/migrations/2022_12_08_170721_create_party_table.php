@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id();
             $table -> string('name');
             $table -> integer('game_id');
-            $table -> integer('owner');
+            $table -> unsignedBigInteger('owner');
             $table->timestamps();
+
+            $table->foreign('owner')->references('id')->on('users');
         });
     }
 
