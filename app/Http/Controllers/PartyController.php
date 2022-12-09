@@ -30,6 +30,8 @@ class PartyController extends Controller
             ], 400);
         }
     }
+
+    
     public function getUserParties($user_id)
     {
         Log::info('Getting user parties');

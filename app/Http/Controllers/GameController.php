@@ -6,6 +6,7 @@ use App\Models\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class GameController extends Controller
 {
@@ -57,11 +58,23 @@ class GameController extends Controller
     public function newGame(Request $request)
     {
         Log::info('Creating new game');
-
-        $title = $request->input('title');
-        $genre = $request->input('genre');
-        $developed = $request->input('developed');
         try {
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|max:255',
+                'genre' => 'required',
+                'developed' => 'required',
+            ]);
+     
+            if ($validator->fails()) {
+                return response([
+                    'success' => false,
+                    'message' => $validator->messages()
+                ], 400);
+            }
+            $title = $request->input('title');
+            $genre = $request->input('genre');
+            $developed = $request->input('developed');
+
             $newGame = DB::table('games')->insertGetId(
                 [
                     'title' => $title,
@@ -90,6 +103,18 @@ class GameController extends Controller
         Log::info('Updating game');
 
         try {
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|max:255',
+                'genre' => 'required',
+                'developed' => 'required',
+            ]);
+     
+            if ($validator->fails()) {
+                return response([
+                    'success' => false,
+                    'message' => $validator->messages()
+                ], 400);
+            }
             $id = $request->input('id');
             $title = $request->input('title');
             $genre = $request->input('genre');
