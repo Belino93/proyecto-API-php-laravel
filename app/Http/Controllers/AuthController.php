@@ -45,6 +45,24 @@ class AuthController extends Controller
             'token' => $jwt_token,
         ]);
     }
+
+    public function logout(Request $request)
+    {
+        try {
+            //JWTAuth::invalidate($request->token);
+            auth()->logout();
+            return response()->json([
+                'success' => true,
+                'message' => 'User logged out successfully'
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, the user cannot be logged out'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function profile()
     {
         return response()->json(auth()->user());;
