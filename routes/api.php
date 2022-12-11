@@ -28,6 +28,11 @@ Route::group([
 ], function () {
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/profile', [AuthController::class, 'profile']);
+//------------Party endpoints------------
+Route::get('/parties', [PartyController::class, 'getParties']);
+Route::get('/parties/user', [PartyController::class, 'getUserParties']);
+Route::post('/parties/new', [PartyController::class, 'newParty'] );
+Route::get('/parties/game/{game_id}', [PartyController::class, 'getGameParties'] );
 });
 
 //------------Game endpoints------------
@@ -41,8 +46,5 @@ Route::patch('/updateGame', [GameController::class, 'updateGame']);
 
 Route::delete('/deleteGame', [GameController::class, 'deleteGame']);
 
-//------------Party endpoints------------
-Route::get('/parties', [PartyController::class, 'getParties']);
-Route::get('/parties/{user_id}', [PartyController::class, 'getUserParties']);
-Route::post('/parties/new', [PartyController::class, 'newParty'] );
+
 

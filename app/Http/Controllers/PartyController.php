@@ -33,16 +33,18 @@ class PartyController extends Controller
     }
 
 
-    public function getUserParties($user_id)
+    public function getUserParties(Request $request)
     {
         Log::info('Getting user parties');
 
         try {
-            $parties = Party::find($user_id);
+            $parties = DB::table('parties')
+                ->where('owner', '=',auth()->user()->id)
+                ->get();
             return response([
                 'success' => true,
                 'message' => 'All games retrieves successfully',
-                'data' => $parties, $parties->user
+                'data' => $parties
             ], 200);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
@@ -58,14 +60,26 @@ class PartyController extends Controller
         Log::info('Getting game parties');
 
         try {
-            $parties = Party::find($game_id);
+            $parties = DB::table('parties')
+                ->where('game_id', '=', $game_id)
+                ->get();
+            if (count($parties) === 0) {
+                return response([
+                    'success' => false,
+                    'message' => 'Any party in this game',
+                ], 400);
+            };
             return response([
                 'success' => true,
                 'message' => 'All games retrieves successfully',
-                'data' => $parties, $parties->game
+                'data' => $parties
             ], 200);
         } catch (\Throwable $th) {
-            //throw $th;
+            Log::error('Error get game parties: ');
+            return response()->json([
+                'success' => false,
+                'message' => 'Any party in this game'
+            ], 400);
         }
     }
 
@@ -98,5 +112,19 @@ class PartyController extends Controller
                 'message' => 'The game is not available',
             ], 400);
         }
+    }
+
+    public function joinParty(Request $request) 
+    {
+        Log::info('Join in Party');
+
+        $validator = Validator::make($request->all(), [
+            'party_id' => 'required|integer',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        
+
     }
 }
