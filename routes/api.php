@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\PartiesUserController;
 use App\Http\Controllers\PartyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,10 @@ Route::get('/parties', [PartyController::class, 'getParties']);
 Route::get('/parties/user', [PartyController::class, 'getUserParties']);
 Route::post('/parties/new', [PartyController::class, 'newParty'] );
 Route::get('/parties/game/{game_id}', [PartyController::class, 'getGameParties'] );
+
+//------------Parties users endpoints------------
+
+Route::post('/parties/join', [PartiesUserController::class, 'joinParty']);
 });
 
 //------------Game endpoints------------

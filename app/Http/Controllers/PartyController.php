@@ -114,17 +114,4 @@ class PartyController extends Controller
         }
     }
 
-    public function joinParty(Request $request) 
-    {
-        Log::info('Join in Party');
-
-        $validator = Validator::make($request->all(), [
-            'party_id' => 'required|integer',
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-        
-
-    }
 }
