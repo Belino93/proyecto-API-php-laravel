@@ -44,3 +44,5 @@ Route::delete('/deleteGame', [GameController::class, 'deleteGame']);
 //------------Party endpoints------------
 Route::get('/parties', [PartyController::class, 'getParties']);
 Route::get('/parties/{user_id}', [PartyController::class, 'getUserParties']);
+Route::post('/parties/new', [PartyController::class, 'newParty'] );
+
