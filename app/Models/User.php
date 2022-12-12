@@ -62,6 +62,6 @@ class User extends Authenticatable implements JWTSubject
     }
     public function party()
     {
-        return $this->belongsToMany(Party::class);
+        return $this->belongsToMany(Party::class, 'parties_users');
     }
 }

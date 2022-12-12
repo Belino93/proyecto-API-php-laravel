@@ -97,11 +97,13 @@ class PartyController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
         try {
-            DB::table('parties')->insert([
+            $party = Party::create([
                 'name' => $request->get('name'),
                 'game_id' => $request->get('game_id'),
                 'owner' => auth()->user()->id,
             ]);
+            //dd($party);
+            $party->user()->attach(auth()->user()->id);
             return response([
                 'success' => true,
                 'message' => 'Party created successfully'
@@ -110,7 +112,7 @@ class PartyController extends Controller
             Log::error('Error creating party: ' . $th->getMessage());
 
             return response([
-                'seuccess' => false,
+                'success' => false,
                 'message' => 'The game is not available',
             ], 400);
         }

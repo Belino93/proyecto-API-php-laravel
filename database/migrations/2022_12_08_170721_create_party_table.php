@@ -20,6 +20,7 @@ return new class extends Migration
             $table -> unsignedBigInteger('owner');
             $table->timestamps();
 
+            $table->unique(['name', 'game_id']);
             $table->foreign('owner')->references('id')->on('users') -> onDelete('cascade');
             $table->foreign('game_id')->references('id')->on('games') -> onDelete('cascade');
         });

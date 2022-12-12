@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this -> call(PartySeeder::class);
         $this -> call(PartiesUsersSeeder::class);
         $this -> call(MessageSeeder::class);
+        $this -> call(RoleSeeder::class);
     }
 }
