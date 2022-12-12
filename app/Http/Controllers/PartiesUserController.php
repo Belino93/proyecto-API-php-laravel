@@ -34,7 +34,22 @@ class PartiesUserController extends Controller
                     'success' => true,
                     'message' => 'Joined in party',
                 ], 200);
+            }else{
+                $parties[0]->active ? DB::table('parties_users')
+                                        ->where('party_id', '=', $request->get('party_id'))
+                                        ->where('user_id', '=', auth()-> user()->id) 
+                                        ->update(['active' => 0])
+                                        :
+                                        DB::table('parties_users')
+                                        ->where('party_id', '=', $request->get('party_id'))
+                                        ->where('user_id', '=', auth()-> user()->id) 
+                                        ->update(['active' => 1]);
+                                        
             }
+            return response([
+                'success' => true,
+                'message' => 'Your party status has changed',
+            ], 200);
             
         } catch (\Throwable $th) {
             Log::error('Error joining in party');

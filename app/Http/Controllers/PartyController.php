@@ -104,6 +104,7 @@ class PartyController extends Controller
             ]);
             //dd($party);
             $party->user()->attach(auth()->user()->id);
+            
             return response([
                 'success' => true,
                 'message' => 'Party created successfully'
