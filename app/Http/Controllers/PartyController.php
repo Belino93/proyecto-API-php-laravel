@@ -38,13 +38,15 @@ class PartyController extends Controller
         Log::info('Getting user parties');
 
         try {
-            $parties = DB::table('parties')
+            $parties = Party::query()->with('users')
                 ->where('owner', '=',auth()->user()->id)
-                ->get();
+                ->first();
+            dd($parties);
+
             return response([
                 'success' => true,
                 'message' => 'All games retrieves successfully',
-                'data' => $parties
+                'data' => $parties->user()
             ], 200);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
