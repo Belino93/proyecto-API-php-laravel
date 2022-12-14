@@ -35,20 +35,23 @@ class PartyController extends Controller
 
 
     // Get parties by user_id
-    public function getUserParties(Request $request)
+    public function getUserParties()
     {
         Log::info('Getting user parties');
 
         try {
-            $parties = Party::query()->with('users')
-                ->where('owner', '=',auth()->user()->id)
-                ->first();
-            dd($parties);
+            $userId = auth()->user()->id;
+            $parties = DB::table('parties_users')
+                    ->join('users', 'users.id', '=', 'parties_users.user_id')
+                    ->select('party_id')
+                    ->where('active', '=', 1)
+                    ->where('users.id', '=', $userId)
+                    ->get();
 
             return response([
                 'success' => true,
                 'message' => 'All games retrieves successfully',
-                'data' => $parties->user()
+                'data' => $parties
             ], 200);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
