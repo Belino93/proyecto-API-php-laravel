@@ -60,9 +60,9 @@ class GameController extends Controller
         Log::info('Creating new game');
         try {
             $validator = Validator::make($request->all(), [
-                'title' => 'required|max:255',
-                'genre' => 'required',
-                'developed' => 'required',
+                'title' => 'required|string|max:255',
+                'genre' => 'required|string',
+                'developed' => 'required|string',
             ]);
      
             if ($validator->fails()) {

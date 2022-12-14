@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class MessageController extends Controller
 {
@@ -29,5 +30,32 @@ class MessageController extends Controller
             ], 400);
         }
 
+    }
+
+    public function newMessage(Request $request)
+    {
+        Log::info('New message');
+
+        try {
+            $validator = Validator::make($request->all(), [
+                'party_id'=> 'required|integer',
+                'content' => 'required|string|max:255',
+            ]);
+     
+            if ($validator->fails()) {
+                return response([
+                    'success' => false,
+                    'message' => $validator->messages()
+                ], 400);
+            }
+
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return response([
+                'success' => false,
+                'message' => 'New message was failed',
+            ], 400);
+        }
     }
 }
