@@ -123,4 +123,33 @@ class PartyController extends Controller
         }
     }
 
+    public function deleteParty($id){
+        Log::info('Delete party');
+
+        try {
+            $deleted = Party::find($id);
+
+            if ($deleted->owner !== auth()->user()->id) {
+                return response([
+                    'success' => false,
+                    'message' => 'Delete only your parties',
+                ], 400);
+            }
+            $deleted ->delete();
+            return response([
+                'success' => true,
+                'message' => 'Party deleted successfully',
+            ]);
+            
+        } catch (\Throwable $th) {
+            Log::error($th -> getMessage());
+            return response([
+                'success' => false,
+                'message' => 'Drop party fail',
+            ], 400);
+        }
+
+
+    }
+
 }

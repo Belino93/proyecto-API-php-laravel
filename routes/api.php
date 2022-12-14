@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PartiesUserController;
 use App\Http\Controllers\PartyController;
 use Illuminate\Http\Request;
@@ -27,34 +28,49 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // JWT middleware
 Route::group([
-'middleware' => 'jwt.auth'
+    'middleware' => 'jwt.auth'
 ], function () {
-Route::get('/logout', [AuthController::class, 'logout']);
-Route::get('/profile', [AuthController::class, 'profile']);
-//------------Party endpoints------------
-Route::get('/parties', [PartyController::class, 'getParties']);
-Route::get('/parties/user', [PartyController::class, 'getUserParties']);
-Route::post('/parties/new', [PartyController::class, 'newParty'] );
-Route::get('/parties/game/{game_id}', [PartyController::class, 'getGameParties'] );
+    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/profile', [AuthController::class, 'profile']);
+});
+
+//------------Game endpoints------------
+
+Route::group([
+    'middleware' => 'jwt.auth'
+], function () {
+    Route::get('/games', [GameController::class, 'getGames']);
+
+    Route::get('/games/{genre}', [GameController::class, 'getGamesByGenre']);
+
+    Route::post('/newGame', [GameController::class, 'newGame']);
+
+    Route::patch('/updateGame', [GameController::class, 'updateGame']);
+
+    Route::delete('/deleteGame', [GameController::class, 'deleteGame']);
+});
 
 //------------Parties users endpoints------------
 
-Route::post('/parties/join', [PartiesUserController::class, 'joinParty']);
-
-//------------Game endpoints------------
-Route::get('/games', [GameController::class, 'getGames']);
-
-Route::get('/games/{genre}', [GameController::class, 'getGamesByGenre']);
-
-Route::post('/newGame', [GameController::class, 'newGame']);
-
-Route::patch('/updateGame', [GameController::class, 'updateGame']);
-
-Route::delete('/deleteGame', [GameController::class, 'deleteGame']);
-
+Route::group([
+    'middleware' => 'jwt.auth'
+], function () {
+    Route::post('/parties/join', [PartiesUserController::class, 'joinParty']);
 });
 
+//------------Party endpoints------------
 
-
-
-
+Route::group([
+    'middleware' => 'jwt.auth'
+], function () {
+    Route::get('/parties', [PartyController::class, 'getParties']);
+    Route::get('/parties/user', [PartyController::class, 'getUserParties']);
+    Route::post('/parties/new', [PartyController::class, 'newParty']);
+    Route::get('/parties/game/{game_id}', [PartyController::class, 'getGameParties']);
+    Route::delete('/parties/{game_id}', [PartyController::class, 'deleteParty']);
+});
+Route::group([
+    'middleware' => 'jwt.auth'
+], function () {
+    Route::get('/messages', [MessageController::class, 'getMessageById']);
+});
