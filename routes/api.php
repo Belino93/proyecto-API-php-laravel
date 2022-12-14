@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+// JWT middleware
 Route::group([
 'middleware' => 'jwt.auth'
 ], function () {
@@ -38,7 +40,6 @@ Route::get('/parties/game/{game_id}', [PartyController::class, 'getGameParties']
 //------------Parties users endpoints------------
 
 Route::post('/parties/join', [PartiesUserController::class, 'joinParty']);
-});
 
 //------------Game endpoints------------
 Route::get('/games', [GameController::class, 'getGames']);
@@ -50,6 +51,10 @@ Route::post('/newGame', [GameController::class, 'newGame']);
 Route::patch('/updateGame', [GameController::class, 'updateGame']);
 
 Route::delete('/deleteGame', [GameController::class, 'deleteGame']);
+
+});
+
+
 
 
 

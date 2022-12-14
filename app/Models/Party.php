@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Party extends Model
 {
     use HasFactory;
-        /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -21,11 +21,16 @@ class Party extends Model
 
     public function game()
     {
-        return $this -> belongsTo(Game::class, 'game_id');
-    }
-    public function user()
-    {
-        return $this -> belongsToMany(User::class, 'parties_users');
+        return $this->belongsTo(Game::class, 'game_id');
     }
 
+    public function user()
+    {
+        return $this->belongsToMany(User::class, 'parties_users');
+    }
+
+    public function message()
+    {
+        return $this->hasMany(Message::class, 'party_id');
+    }
 }

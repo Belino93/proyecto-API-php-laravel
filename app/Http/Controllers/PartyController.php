@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 class PartyController extends Controller
 {
+    // Get all parties
     public function getParties()
     {
         Log::info('Getting parties');
@@ -33,6 +34,7 @@ class PartyController extends Controller
     }
 
 
+    // Get parties by user_id
     public function getUserParties(Request $request)
     {
         Log::info('Getting user parties');
@@ -57,6 +59,7 @@ class PartyController extends Controller
         }
     }
 
+    // Get parties by game_id
     public function getGameParties($game_id)
     {
         Log::info('Getting game parties');
@@ -85,6 +88,7 @@ class PartyController extends Controller
         }
     }
 
+    // Create new party
     public function newParty(Request $request)
     {
         Log::info('Create new party');

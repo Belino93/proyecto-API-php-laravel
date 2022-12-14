@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('genre');
             $table->string('developed');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); 
         });
     }
 

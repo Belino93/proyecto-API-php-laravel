@@ -74,19 +74,19 @@ class GameController extends Controller
             $title = $request->input('title');
             $genre = $request->input('genre');
             $developed = $request->input('developed');
+            $user_id = auth()->user()->id;
 
-            $newGame = DB::table('games')->insertGetId(
-                [
-                    'title' => $title,
-                    'genre' => $genre,
-                    'developed' => $developed,
-                ]
-            );
+            $newGame = Game::create([
+                'title' => $title,
+                'genre' => $genre,
+                'developed' => $developed,
+                'user_id' => $user_id
+            ]);
 
             return response([
                 'success' => true,
                 'message' => 'Game created successfully',
-                'data' => 'The game ' . $title . ' was created with id ' . $newGame,
+                'data' => 'The game ' . $title . ' was created'
             ], 200);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
