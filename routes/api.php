@@ -44,12 +44,6 @@ Route::group([
     Route::get('/games', [GameController::class, 'getGames']);
 
     Route::get('/games/{genre}', [GameController::class, 'getGamesByGenre']);
-
-    Route::post('/newGame', [GameController::class, 'newGame']);
-
-    Route::patch('/updateGame', [GameController::class, 'updateGame']);
-
-    Route::delete('/deleteGame', [GameController::class, 'deleteGame']);
 });
 
 //------------Parties users endpoints------------
@@ -81,5 +75,17 @@ Route::group([
     Route::put('/messages', [MessageController::class, 'editMessage']);
     Route::delete('/messages', [MessageController::class, 'deleteMessage']);
     Route::post('/partyChat', [MessageController::class, 'getChat']);
+});
 
+//------------Super admin role------------
+
+Route::group([
+    'middleware' => ['jwt.auth', 'isSuperAdmin']
+], function () {
+    Route::post('/add_super_admin_role/{id}', [UserController::class, 'addSuperAdminRoleByIdUser']);
+    Route::post('/newGame', [GameController::class, 'newGame']);
+
+    Route::patch('/updateGame', [GameController::class, 'updateGame']);
+
+    Route::delete('/deleteGame', [GameController::class, 'deleteGame']);
 });
