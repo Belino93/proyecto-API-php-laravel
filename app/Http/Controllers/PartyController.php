@@ -50,7 +50,7 @@ class PartyController extends Controller
 
             return response([
                 'success' => true,
-                'message' => 'All games retrieves successfully',
+                'message' => 'All your parties retrieves successfully',
                 'data' => $parties
             ], 200);
         } catch (\Throwable $th) {
