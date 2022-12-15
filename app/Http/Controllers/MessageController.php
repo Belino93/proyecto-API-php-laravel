@@ -57,7 +57,7 @@ class MessageController extends Controller
                 ->get()
                 ->toArray();
 
-            
+
             foreach ($parties as $party) {
                 if ($party->party_id === intval($request->get('party_id'))) {
                     Message::create([
@@ -71,7 +71,10 @@ class MessageController extends Controller
                     ], 200);
                 }
             }
-
+            return response([
+                'success' => false,
+                'message' => 'Join to the party before send message',
+            ], 400);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return response([
@@ -79,5 +82,77 @@ class MessageController extends Controller
                 'message' => 'New message was failed',
             ], 400);
         }
+    }
+
+    public function editMessage(Request $request)
+    {
+        Log::info('Edir message');
+
+        try {
+            $validator = Validator::make($request->all(), [
+                'content' => 'required|string|max:255',
+                'message_id' => 'required|integer'
+            ]);
+            if ($validator->fails()) {
+                return response([
+                    'success' => false,
+                    'message' => $validator->messages()
+                ], 400);
+            }
+            $content = $request->get('content');
+            $message_id = $request->get('message_id');
+
+            $updateMessage = Message::where('id', $message_id)
+                ->where('user_id', auth()->user()->id)
+                ->update([
+                    'content' => $content
+                ]);
+            if (!$updateMessage) {
+                return response([
+                    "success" => true,
+                    "message" => "The message doesnt exist"
+                ], 404);
+            }
+
+            return response([
+                'success'=> true,
+                'message' => 'Message updated'
+            ]);
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return response([
+                'success' => false,
+                'message' => 'New game was failed',
+            ], 400);
+        }
+    }
+
+    public function deleteMessage(Request $request)
+    {
+        Log::info('Delete message');
+
+        try {
+            $validator = Validator::make($request->all(), [
+                'message_id' => 'required|integer',
+            ]);
+     
+            if ($validator->fails()) {
+                return response([
+                    'success' => false,
+                    'message' => $validator->messages()
+                ], 400);
+            }
+
+            $message = Message::where('id', $request->get('message_id'));
+            if($message->user_id !== auth()->user()->id){
+
+            }
+
+            
+        } catch (\Throwable $th) {
+            
+        }
+
     }
 }

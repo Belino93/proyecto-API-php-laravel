@@ -69,9 +69,14 @@ Route::group([
     Route::get('/parties/game/{game_id}', [PartyController::class, 'getGameParties']);
     Route::delete('/parties/{game_id}', [PartyController::class, 'deleteParty']);
 });
+
+//------------Message endpoints------------
 Route::group([
     'middleware' => 'jwt.auth'
 ], function () {
     Route::get('/messages', [MessageController::class, 'getMessageById']);
     Route::post('/messages', [MessageController::class, 'newMessage']);
+    Route::put('/messages', [MessageController::class, 'editMessage']);
+    Route::delete('/messages', [MessageController::class, 'deleteMessage']);
+
 });
