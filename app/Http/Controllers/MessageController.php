@@ -115,10 +115,9 @@ class MessageController extends Controller
             }
 
             return response([
-                'success'=> true,
+                'success' => true,
                 'message' => 'Message updated'
             ]);
-
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return response([
@@ -136,7 +135,7 @@ class MessageController extends Controller
             $validator = Validator::make($request->all(), [
                 'message_id' => 'required|integer',
             ]);
-     
+
             if ($validator->fails()) {
                 return response([
                     'success' => false,
@@ -144,15 +143,32 @@ class MessageController extends Controller
                 ], 400);
             }
 
-            $message = Message::where('id', $request->get('message_id'));
-            if($message->user_id !== auth()->user()->id){
+            $message = Message::find($request->get('message_id'));
 
+            if(!$message){
+                return response([
+                    'success' => false,
+                    'message' => 'The message doesnt exist'
+                ], 404);
+            }
+            if ($message->user_id !== auth()->user()->id) {
+                return response([
+                    'success' => true,
+                    'message' => 'Only can delete your messages'
+                ], 400);
             }
 
-            
+            $message->delete();
+            return response([
+                'seuccess' => true,
+                'message' => 'Message deleted successfully',
+            ], 200);
         } catch (\Throwable $th) {
-            
+            Log::error($th->getMessage());
+            return response([
+                'success' => false,
+                'message' => 'Fail drop message',
+            ], 400);
         }
-
     }
 }
