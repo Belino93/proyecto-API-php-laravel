@@ -129,6 +129,14 @@ class GameController extends Controller
             $title = $request->input('title');
             $genre = $request->input('genre');
             $developed = $request->input('developed');
+            $titleExist = Game::where('title', $title)->first();
+
+            if ($titleExist) {
+                return response([
+                    'success' => true,
+                    'message' => 'This game already exist'
+                ]);
+            }
             $updated = DB::table('games')
                 ->where('id', $id)
                 ->update(
