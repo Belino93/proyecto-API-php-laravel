@@ -76,7 +76,16 @@ class GameController extends Controller
             $developed = $request->input('developed');
             $user_id = auth()->user()->id;
 
-            $newGame = Game::create([
+            $titleExist = Game::where('title', $title)->first();
+
+            if ($titleExist) {
+                return response([
+                    'success' => true,
+                    'message' => 'This game already exist'
+                ]);
+            }
+
+            Game::create([
                 'title' => $title,
                 'genre' => $genre,
                 'developed' => $developed,
