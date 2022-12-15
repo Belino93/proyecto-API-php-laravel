@@ -5,6 +5,7 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PartiesUserController;
 use App\Http\Controllers\PartyController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,7 @@ Route::group([
 ], function () {
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [AuthController::class, 'profile']);
+    Route::patch('/updateName', [UserController::class, 'updateUser']);
 });
 
 //------------Game endpoints------------
@@ -78,5 +80,6 @@ Route::group([
     Route::post('/messages', [MessageController::class, 'newMessage']);
     Route::put('/messages', [MessageController::class, 'editMessage']);
     Route::delete('/messages', [MessageController::class, 'deleteMessage']);
+    Route::post('/partyChat', [MessageController::class, 'getChat']);
 
 });

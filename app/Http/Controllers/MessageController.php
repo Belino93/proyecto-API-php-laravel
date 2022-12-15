@@ -145,7 +145,7 @@ class MessageController extends Controller
 
             $message = Message::find($request->get('message_id'));
 
-            if(!$message){
+            if (!$message) {
                 return response([
                     'success' => false,
                     'message' => 'The message doesnt exist'
@@ -168,6 +168,61 @@ class MessageController extends Controller
             return response([
                 'success' => false,
                 'message' => 'Fail drop message',
+            ], 400);
+        }
+    }
+
+    public function getChat(Request $request)
+    {
+        Log::info('Retrieving chat');
+        $validator = Validator::make($request->all(), [
+            'party_id' => 'required|integer'
+        ]);
+        if ($validator->fails()) {
+            return response([
+                'success' => false,
+                'message' => $validator->messages()
+            ], 400);
+        }
+        try {
+            $party_id = $request->get('party_id');
+            $isUserInParty = DB::table('parties_users')
+                            ->where('party_id', '=', $party_id)
+                            ->where('user_id', '=', auth()->user()->id)
+                            ->get()
+                            ->toArray();
+            if(!$isUserInParty){
+                return response([
+                    'success'=> true,
+                    'message'=> 'You are not inside party'
+                ], 400);
+            }
+
+            $chat = DB::table('messages')
+                    ->join('users', 'users.id', '=', 'messages.user_id')
+                    ->select('users.userName', 'messages.content', 'messages.updated_at')
+                    ->where('party_id', '=', $party_id)
+                    ->orderBy('messages.id')
+                    ->get();
+
+            if(count($chat) === 0){
+                return response([
+                    'success'=> true,
+                    'message'=> 'The chat is empty'
+                ], 400);
+            }
+
+            return response([
+                'success'=> true,
+                'message'=>'Chat retrieve successfully',
+                'data'=> $chat
+            ], 200);
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return response([
+                'success' => false,
+                'message' => 'Fail retrieving chat',
             ], 400);
         }
     }
