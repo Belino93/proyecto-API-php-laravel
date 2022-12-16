@@ -88,4 +88,5 @@ Route::group([
     Route::patch('/updateGame', [GameController::class, 'updateGame']);
 
     Route::delete('/deleteGame', [GameController::class, 'deleteGame']);
+    Route::get('/users/all', [UserController::class, 'getUsers']);
 });

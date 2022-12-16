@@ -12,6 +12,22 @@ class UserController extends Controller
     public function getUsers()
     {
         Log::info('Getting user');
+        try {
+            $users = User::all()->toArray();
+            return response([
+                'success'=> true,
+                'message'=> 'Users retrieving successfully',
+                'data'=> $users
+            ]);
+
+        } catch (\Throwable $th) {
+            Log::error('Error getting Username: ' . $th->getMessage());
+
+            return response([
+                'success' => false,
+                'message' => 'Get user fails',
+            ], 400);
+        }
     }
     public function updateUser(Request $request)
     {
