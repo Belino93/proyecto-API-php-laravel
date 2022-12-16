@@ -7,60 +7,65 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Proyecto Laravel-PHP
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Proyecto realizado para GeeksHubs Academy, se nos pide crear la parte backend para una aplicación web LFG, que permita que los usuarios puedan formar grupos para jugar a videojuegos, en el que tambien pueden utilizarlo como chat.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Uso de la API
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/23873290-13f4e0cd-5e89-4660-8a4a-2e50c7298333?action=collection%2Ffork&collection-url=entityId%3D23873290-13f4e0cd-5e89-4660-8a4a-2e50c7298333%26entityType%3Dcollection%26workspaceId%3D0036013c-adfd-42cc-995e-7fbd3c9599ba#?env%5BNew%20Environment%5D=W10=)
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Tecnologías utilizadas en el proyecto:
+- **Laravel**
+- **PHP**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Librerias extra
+    - tymon/jwt-auth : Gestiona la autorización con JWT
+    
+### Explicación de la estructura del proyecto
+Partimos con la estructura basica de laravel.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Controllers**
+    -AuthController.php : Controlador creado para los endpoints de Registro, Login y Perfil.
+    -GameController.php : Controlador que contiene los endpoint de la tabla de juegos.
+    -MessageController.php : Controlador que contiene los endpoint relacionados con el chat.
+    -PartiesUsersController.php : Controla la creacion de grupos con usuarios.
+    -PartyController.php : Contiene los endpoints para administrar grupos.
+    -UserController.php : Contiene los endpoints de usuarios
 
-## Laravel Sponsors
+- **Middleewares**
+    -IsSuperAdmin.php : Middleware que controla las peticiones a endpoints para superAdmin.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+- **Models**
+    -Game.php : Modelo de juego.
+    -Message.php : Modelo de Mensaje.
+    -Party.php : Modelo de Grupo.
+    -Rol.php : Modelo de Rol.
+    -User.php : Modelo de Usuario.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
 
-## Contributing
+- **Explicación de la securización de la API**
+    -Los usuarios que no estén logados pueden:
+        - Registrarse
+        - Loguearse
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    -Los usuarios logueados con rol 'user', pueden además:
+        - Ver juegos
+        - Buscar juegos
+        - Crear grupos
+        - Buscar grupos
+        - Unirse a grupos de juego
+        - Enviar mensajes
+        - Ver sus mensajes
+        - Editar sus mensajes
+        - Borrar mensajes
+        - Ver su perfil
+        - Borrar su perfil
+    -Los usuarios que cuenten con el rol de 'superAdmin', pueden también:
+        - Crear juegos
+        - Eliminar juegos
+        - Actualizar juegos
+        - Ver todos los usuarios
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
