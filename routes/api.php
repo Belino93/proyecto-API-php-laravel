@@ -27,13 +27,14 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// JWT middleware
+// JWT middleware, USER ROUTES
 Route::group([
     'middleware' => 'jwt.auth'
 ], function () {
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::patch('/updateName', [UserController::class, 'updateUser']);
+    Route::delete('/userDelete', [UserController::class, 'deleteUser']);
 });
 
 //------------Game endpoints------------
