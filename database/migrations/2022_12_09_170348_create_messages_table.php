@@ -13,12 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('games', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('genre');
-            $table->string('developed');
+            $table->unsignedBigInteger('party_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('content');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users') -> onDelete('cascade');
+            $table->foreign('party_id')->references('id')->on('parties') -> onDelete('cascade');
         });
     }
 
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('games');
+        Schema::dropIfExists('messages');
     }
 };
